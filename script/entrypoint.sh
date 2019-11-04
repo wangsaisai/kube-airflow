@@ -75,4 +75,11 @@ if [ ! -z $GIT_SYNC_REPO ]; then
     $AIRFLOW_HOME/git-sync --dest $AIRFLOW_HOME/dags --force &
 fi
 
-$CMD "$@"
+#$CMD "$@"
+while true; do
+  $CMD "$@"
+  RETCODE=$?
+  if [ ${RETCODE} -ne 0 ] || [ "$1" != "scheduler" ]; then
+    exit ${RETCODE}
+  fi
+done
